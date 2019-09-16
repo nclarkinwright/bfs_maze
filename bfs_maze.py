@@ -42,7 +42,20 @@ class Maze():
 
     def neighbor(self, move):
         """Return another Maze instance with a move made."""
-        # YOU FILL THIS IN
+        # Move north
+        if (move == 'N'):
+            self.location = (self.location[0] - 1, self.location[1])
+        # Move east
+        if (move == 'E'):
+            self.location = (self.location[0], self.location[1] + 1)
+        # Move south
+        if (move == 'S'):
+            self.location = (self.location[0] + 1, self.location[1])
+        # Move west
+        if (move == 'N'):
+            self.location = (self.location[0], self.location[1] - 1)
+        
+        return self
 
 class Agent():
     """Knows how to find the exit to a maze with BFS."""
@@ -82,6 +95,10 @@ maze.display()
 agent = Agent()
 goal = Maze(grid, (19, 18))
 path = agent.bfs(maze, goal)
+
+#test code
+test_maze = maze.neighbor('S')
+test_maze.display()
 
 while path:
     move = path.pop(0)
