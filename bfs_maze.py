@@ -21,8 +21,24 @@ class Maze():
 
     def moves(self):
         """Return a list of possible moves given the current agent location."""
-        current_location = [*self.location].reverse()
-        moves = []
+        # current_location list goes [X, Y], but grid goes [Y, X]
+        current_location = self.location
+        possible_moves = []
+
+        # Check north
+        if (self.grid[current_location[1]][current_location[0] - 1] == ' '):
+            possible_moves.append('N')
+        # Check east
+        if (self.grid[current_location[1] + 1][current_location[0]] == ' '):
+            possible_moves.append('E')
+        # Check south
+        if (self.grid[current_location[1]][current_location[0] + 1] == ' '):
+            possible_moves.append('S')
+        # Check west
+        if (self.grid[current_location[1] - 1][current_location[0]] == ' '):
+            possible_moves.append('W')
+
+        return possible_moves
 
     def neighbor(self, move):
         """Return another Maze instance with a move made."""
