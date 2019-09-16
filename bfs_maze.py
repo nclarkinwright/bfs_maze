@@ -21,7 +21,8 @@ class Maze():
 
     def moves(self):
         """Return a list of possible moves given the current agent location."""
-        # YOU FILL THIS IN
+        current_location = [*self.location].reverse()
+        moves = []
 
     def neighbor(self, move):
         """Return another Maze instance with a move made."""
