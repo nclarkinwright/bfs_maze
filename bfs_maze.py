@@ -21,27 +21,28 @@ class Maze():
 
     def moves(self):
         """Return a list of possible moves given the current agent location."""
-        # current_location list goes [X, Y], but grid goes [Y, X]
+        # Grid goes (y, x)
         current_location = self.location
         possible_moves = []
 
         # Check north
-        if (self.grid[current_location[1]][current_location[0] - 1] == ' '):
+        if (self.grid[current_location[0] - 1][current_location[1]] == ' '):
             possible_moves.append('N')
         # Check east
-        if (self.grid[current_location[1] + 1][current_location[0]] == ' '):
+        if (self.grid[current_location[0]][current_location[1] + 1] == ' '):
             possible_moves.append('E')
         # Check south
-        if (self.grid[current_location[1]][current_location[0] + 1] == ' '):
+        if (self.grid[current_location[0] + 1][current_location[1]] == ' '):
             possible_moves.append('S')
         # Check west
-        if (self.grid[current_location[1] - 1][current_location[0]] == ' '):
+        if (self.grid[current_location[0]][current_location[1] - 1] == ' '):
             possible_moves.append('W')
 
         return possible_moves
 
     def neighbor(self, move):
         """Return another Maze instance with a move made."""
+        # Grid goes (y, x)
         # Move north
         if (move == 'N'):
             self.location = (self.location[0] - 1, self.location[1])
@@ -52,7 +53,7 @@ class Maze():
         if (move == 'S'):
             self.location = (self.location[0] + 1, self.location[1])
         # Move west
-        if (move == 'N'):
+        if (move == 'W'):
             self.location = (self.location[0], self.location[1] - 1)
         
         return self
@@ -95,10 +96,6 @@ maze.display()
 agent = Agent()
 goal = Maze(grid, (19, 18))
 path = agent.bfs(maze, goal)
-
-#test code
-test_maze = maze.neighbor('S')
-test_maze.display()
 
 while path:
     move = path.pop(0)

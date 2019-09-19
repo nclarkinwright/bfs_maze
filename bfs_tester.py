@@ -35,14 +35,14 @@ class TestMethods(unittest.TestCase):
         self.assertCountEqual(self.m1.moves(), ["E","S"])
 
     def test_neighbor(self):
-        self.m2 = self.m1.neighbor("E")
+        self.m2 = self.m1.neighbor("S")
         self.assertEqual(self.m1.grid, self.m2.grid)
         self.assertEqual(self.m2.location, (2,1))
 
     def test_bfs(self):
-        self.assertEqual(Agent().bfs(self.m1,self.g1), ['E', 'E', 'S', 'S', 'S', 'S',
-            'S', 'S', 'E', 'E', 'S', 'S', 'S', 'S', 'S', 'E', 'E', 'E', 'S', 'S', 'E', 'S', 'S', 'E',
-            'E', 'E', 'E', 'E', 'S', 'S', 'E', 'E', 'E', 'E', 'E'])
+        self.assertEqual(Agent().bfs(self.m1,self.g1), ['S', 'S', 'E', 'E', 'E', 'E',
+        'E', 'E', 'S', 'S', 'E', 'E', 'E', 'E', 'E', 'S', 'S', 'S', 'E', 'E', 'S', 'E', 'E', 'S',
+        'S', 'S', 'S', 'S', 'E', 'E', 'S', 'S', 'S', 'S', 'S'])
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
