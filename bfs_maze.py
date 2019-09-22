@@ -58,12 +58,34 @@ class Maze():
         
         return self
 
+    def is_same_loc(self, maze):
+        return self.location == maze.location
+
 class Agent():
     """Knows how to find the exit to a maze with BFS."""
 
     def bfs(self, maze, goal):
         """Return an ordered list of moves to get the maze to match the goal."""
-        # YOU FILL THIS IN
+        start = maze.location
+        frontier = [start]
+        explored = [start]
+        path = []
+
+        while frontier != []:
+            parent = frontier.pop()
+            parent_maze = Maze(maze.grid, parent)
+            children = parent_maze.moves()
+            print(children)
+            for x in children:
+                child_maze = parent_maze.neighbor(x)
+                if child_maze.location not in explored:
+                    frontier.append(child_maze.location)
+                    explored.append(child_maze.location)
+                    path.append(x)
+                    if child_maze.location == goal:
+                        return path
+            print(path)
+
 
 def main():
     """Create a maze, solve it with BFS, and console-animate."""
