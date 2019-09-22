@@ -22,41 +22,47 @@ class Maze():
     def moves(self):
         """Return a list of possible moves given the current agent location."""
         # Grid goes (y, x)
-        current_location = self.location
         possible_moves = []
 
-        # Check north
-        if (self.grid[current_location[0] - 1][current_location[1]] == ' '):
-            possible_moves.append('N')
-        # Check east
-        if (self.grid[current_location[0]][current_location[1] + 1] == ' '):
-            possible_moves.append('E')
-        # Check south
-        if (self.grid[current_location[0] + 1][current_location[1]] == ' '):
-            possible_moves.append('S')
-        # Check west
-        if (self.grid[current_location[0]][current_location[1] - 1] == ' '):
-            possible_moves.append('W')
+        #Vertical
+        if self.location[0] + 1 < len(grid):
+            # Check north
+            if self.grid[self.location[0] - 1][self.location[1]] == ' ':
+                possible_moves.append('N')
+            # Check south
+            if self.grid[self.location[0] + 1][self.location[1]] == ' ':
+                possible_moves.append('S')
+        
+        #Horizontal
+        if self.location[1] + 1 < len(grid[0]):
+            # Check east
+            if self.grid[self.location[0]][self.location[1] + 1] == ' ':
+                possible_moves.append('E')
+            # Check west
+            if self.grid[self.location[0]][self.location[1] - 1] == ' ':
+                possible_moves.append('W')
 
         return possible_moves
 
     def neighbor(self, move):
         """Return another Maze instance with a move made."""
         # Grid goes (y, x)
+        moved = Maze(self.grid, self.location)
+
         # Move north
         if (move == 'N'):
-            self.location = (self.location[0] - 1, self.location[1])
+            moved.location = (moved.location[0] - 1, moved.location[1])
         # Move east
         if (move == 'E'):
-            self.location = (self.location[0], self.location[1] + 1)
+            moved.location = (moved.location[0], moved.location[1] + 1)
         # Move south
         if (move == 'S'):
-            self.location = (self.location[0] + 1, self.location[1])
+            moved.location = (moved.location[0] + 1, moved.location[1])
         # Move west
         if (move == 'W'):
-            self.location = (self.location[0], self.location[1] - 1)
+            moved.location = (moved.location[0], moved.location[1] - 1)
         
-        return self
+        return moved
 
     def is_same_loc(self, maze):
         return self.location == maze.location
@@ -73,18 +79,18 @@ class Agent():
 
         while frontier != []:
             parent = frontier.pop()
+            print('Parent: ' + str(parent))
             parent_maze = Maze(maze.grid, parent)
             children = parent_maze.moves()
-            print(children)
+            print('Children: ' + str(children))
             for x in children:
                 child_maze = parent_maze.neighbor(x)
                 if child_maze.location not in explored:
                     frontier.append(child_maze.location)
                     explored.append(child_maze.location)
                     path.append(x)
-                    if child_maze.location == goal:
-                        return path
-            print(path)
+                if child_maze.location == goal:
+                    return path
 
 
 def main():
