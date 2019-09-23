@@ -24,23 +24,18 @@ class Maze():
         # Grid goes (y, x)
         possible_moves = []
 
-        #Vertical
-        if self.location[0] + 1 < len(grid):
-            # Check north
-            if self.grid[self.location[0] - 1][self.location[1]] == ' ':
-                possible_moves.append('N')
-            # Check south
-            if self.grid[self.location[0] + 1][self.location[1]] == ' ':
-                possible_moves.append('S')
-        
-        #Horizontal
-        if self.location[1] + 1 < len(grid[0]):
-            # Check east
-            if self.grid[self.location[0]][self.location[1] + 1] == ' ':
-                possible_moves.append('E')
-            # Check west
-            if self.grid[self.location[0]][self.location[1] - 1] == ' ':
-                possible_moves.append('W')
+        # Check north
+        if self.grid[self.location[0] - 1][self.location[1]] == ' ':
+            possible_moves.append('N')
+        # Check south
+        if self.grid[self.location[0] + 1][self.location[1]] == ' ':
+            possible_moves.append('S')
+        # Check east
+        if self.grid[self.location[0]][self.location[1] + 1] == ' ':
+            possible_moves.append('E')
+        # Check west
+        if self.grid[self.location[0]][self.location[1] - 1] == ' ':
+            possible_moves.append('W')
 
         return possible_moves
 
@@ -63,8 +58,8 @@ class Maze():
             moved.location = (moved.location[0], moved.location[1] - 1)
         
         return moved
-
-    def is_same_loc(self, maze):
+    
+    def has_same_location (self, maze):
         return self.location == maze.location
 
 class Agent():
@@ -74,24 +69,42 @@ class Agent():
         """Return an ordered list of moves to get the maze to match the goal."""
         start = maze.location
         frontier = [start]
-        explored = [start]
-        path = []
+        explored = {start: (start, ' ')}
+        goal_found = False
 
-        while frontier != []:
+        while frontier != [] and not(goal_found):
             parent = frontier.pop()
-            print('Parent: ' + str(parent))
             parent_maze = Maze(maze.grid, parent)
             children = parent_maze.moves()
-            print('Children: ' + str(children))
             for x in children:
                 child_maze = parent_maze.neighbor(x)
                 if child_maze.location not in explored:
+                    explored.setdefault(child_maze.location, (parent, x))
                     frontier.append(child_maze.location)
-                    explored.append(child_maze.location)
-                    path.append(x)
-                if child_maze.location == goal:
-                    return path
+                    if child_maze.has_same_location(goal):
+                        goal_found = True
+                        break
+        
+        return find_path(maze, goal, explored)
 
+# Finds shortest path from start to goal from explored dictionary from the bfs function
+def find_path(maze, goal, explored):
+    path = []
+    child = goal.location
+    parent_and_direction = explored.get(child)
+    parent = parent_and_direction[0]
+    direction = parent_and_direction[1]
+    path.append(direction) 
+    
+    while (child != parent):
+        child = parent
+        parent_and_direction = explored.get(child)
+        parent = parent_and_direction[0]
+        direction = parent_and_direction[1]
+        if (direction != ' '):
+            path.append(direction)
+
+    return path[::-1]
 
 def main():
     """Create a maze, solve it with BFS, and console-animate."""
