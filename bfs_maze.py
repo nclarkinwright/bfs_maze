@@ -1,3 +1,7 @@
+# Nicholas Clarkin-Wright
+# nc819094@wcupa.edu
+# HW 1
+
 import time
 
 class Maze():
